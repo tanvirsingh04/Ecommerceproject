@@ -1,0 +1,12 @@
+.loader{
+    border: 2px solid black;
+    width:100%;
+    height:800px;
+    margin: 10px auto;
+
+}
+
+img{
+    width: inherit;
+    height: inherit;
+}
