@@ -31,7 +31,9 @@ body{
     font-size: 24px;
     margin-bottom: 10px;
 }
-.p-card1{
+p{
+    /* border: 2px solid black; */
+    margin: 20px auto;
     font-size: 16px;
     color: #555;
 }
@@ -55,7 +57,7 @@ body{
 
 .btn-grad{
     /* border: 2px solid black; */
-    visibility: visible;
+    visibility: hidden;
     margin-left: 80px;
     padding: 15px 45px;
     text-align: center;
@@ -74,6 +76,7 @@ body{
 }
 
 .plus{
+    width: 30px;
     position: absolute;
     top:10px;
     left:100px;
@@ -81,6 +84,7 @@ body{
 }
 
 .minus{
+    width: 30px;
     position: absolute;
     top: 10px;
     /* visibility: visible; */
@@ -93,7 +97,10 @@ body{
     height: 20px;
     position: absolute;
     top: 8px;
-    right: 137px ;
+    right: 140px ;
+    text-align: center;
+    border: none;
+    background-color: transparent;
 }
 
 
