@@ -1,13 +1,19 @@
 import './card.css';
 import img1 from './cemoflagshoes.png';
-import img2 from './shoesreebok.png';
 import React, { useState } from 'react';
+import './navbar.js';
+
  
 function Cards(){
 
+  const [darkMode, setDarkMode] = useState(false);
+      const toggleTheme = () => {
+          setDarkMode(!darkMode);
+      };
+
   
 
-  const [count, setCount] = React.useState(0);
+  const [count, setCount] =useState(0);
   const plus=()=>{
     setCount(count+1);
   };
@@ -82,9 +88,9 @@ function Cards(){
 
 
     return(
-      <div className="cards">
+      <main className={darkMode ? "app dark" : "app light"}>
         <div className="card card1">
-        <img src="https://trase.in/cdn/shop/files/42139-BKWH-1.jpg?v=1749468869" className="img card1" alt="Card 1 Image" />
+        <img src="https://trase.in/cdn/shop/files/42139-BKWH-1.jpg?v=1749468869" className="img card1" alt="Card 1 Shoes" />
           <h2>Reebook Funky Shoes for Men</h2>
           <p>Rs-3999</p>
           <div className='btn'>
@@ -96,7 +102,7 @@ function Cards(){
           </div>
         </div>
         <div className="card card1">
-          <img src={img1} className="img card2" alt="Card 2 Image" />
+          <img src={img1} className="img card2" alt="Card 2 Shoes" />
           <h2>Reebook Loofers for Womens</h2>
           <p>Rs-2999</p>
           <div className='btn'>
@@ -108,7 +114,7 @@ function Cards(){
           </div>
         </div>
         <div className="card card1">
-          <img src='https://redchief.in/cdn/shop/files/317_800x.png?v=1756061961' className="img card2" alt="Card 2 Image" />
+          <img src='https://redchief.in/cdn/shop/files/317_800x.png?v=1756061961' className="img card2" alt="Card 3 Shoes" />
           <h2>Sparks Sports Shoes for mens</h2>
           <p>Rs-4999</p>
           <div className='btn'>
@@ -120,7 +126,7 @@ function Cards(){
           </div>
         </div>
         <div className="card card1">
-          <img src='https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/25345394/2023/10/4/e8913b64-a87b-49e7-b685-80e9189865a51696425461509CasualShoes1.jpg' className="img card2" alt="Card 2 Image" />
+          <img src='https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/25345394/2023/10/4/e8913b64-a87b-49e7-b685-80e9189865a51696425461509CasualShoes1.jpg' className="img card2" alt="Card 4 Shoes" />
           <h2>Jordan Air Shoes for mens (Black)</h2>
           <p>Rs-2499</p>
            <div className='btn'>
@@ -132,7 +138,7 @@ function Cards(){
            </div>
         </div>
         <div className="card card1">
-          <img src='https://egoss.in/cdn/shop/files/EP-5410_BLACK.jpg?v=1753876169&width=2048'className="img card2" alt="Card 2 Image" />
+          <img src='https://egoss.in/cdn/shop/files/EP-5410_BLACK.jpg?v=1753876169&width=2048'className="img card2" alt="Card 5 Shoes" />
           <h2>Bata party wear shoes for mens</h2>
           <p>Rs-1999</p>
           <div className='btn'>
@@ -143,7 +149,7 @@ function Cards(){
           <button onClick={reset4}>Reset</button>
           </div>
         </div>
-      </div> 
+      </main> 
     );
     
   }

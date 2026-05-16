@@ -1,18 +1,15 @@
-import logo from './logo.svg';
-// import './App.css';
-import Navbar from './Pages/navbar';
-import Cards from './Pages/card';  
-// import ProductList from './productlist';
-import Loader from './Pages/loader';
-import { ThemeContext } from "./Pages/ThemeContext";
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from './Pages/navbar';
+import Cards from './Pages/card';
+import Loader from './Pages/loader';
 import Home from './Pages/Home';
-import Register from './Pages/register';
+import Register from './Pages/Register';
 import Login from './Pages/login';
 import About from "./Pages/About";
-// import Contact from "./Pages/Contact";
+import Product from './Pages/Product';
+import User from './Pages/user';
 function App() {
   return (
   <BrowserRouter>
@@ -25,9 +22,12 @@ function App() {
   <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/about" element={<About />} />
-  <Route path="/product" element={<Navbar />} />
+  <Route path="/product" element={<Product />} />
   <Route path="/login" element={<Login />} />
-  <Route path="/register" element={<Register />} />
+  <Route path="/Register" element={<Register />} />
+  <Route path="/user" element={<User/>} />
+  {/* <Route path="/user" element={<User />} /> */}
+
   
   {/* <Route path="/contact" element={<Contact />} /> */}
   </Routes>

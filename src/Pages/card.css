@@ -1,4 +1,4 @@
-.cards{
+main{
     /* border: 2px solid black; */
     width: 100%;
     margin: 10px auto;
@@ -71,7 +71,7 @@ p{
     position: relative;
     outline: none;
     z-index: 1;
-    /* border: none; */
+    border: none;
     background-image: linear-gradient(to right, #02AAB0 0%, #00CDAC 51%, #02AAB0 100%);
 }
 
@@ -87,7 +87,7 @@ p{
     width: 30px;
     position: absolute;
     top: 10px;
-    /* visibility: visible; */
+    visibility: visible;
     z-index: 0;
     left: 190px;
 }
@@ -108,4 +108,24 @@ p{
     background-position: right center;
     color: #fff;
     text-decoration: none;
+}
+
+
+main.light,
+main.light * {
+background-color: #ffffff;
+color: #000000;
+}
+
+
+main.dark,
+main.dark *{
+    background-color: #121212;
+color: #e2dddd;
+}
+
+main.dark{
+    background-color: white;
+    color: black;
+
 }

@@ -19,7 +19,7 @@ body {
     background-image: radial-gradient(circle 476px at 54.8% 51.5%, rgba(168, 229, 253, 1) 0%, rgba(244, 244, 254, 1) 42.3%, rgba(244, 244, 254, 1) 100.2%);
     padding: 40px;
     margin: 200px auto;
-
+    /* width: 400px; */
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     width: 100%;
@@ -73,4 +73,13 @@ h1 {
 
 .button:active {
     transform: translateY(0);
+}
+
+.success{
+    /* border: 2px solid black; */
+    width: 100%;
+    height:40px;
+    color: green;
+    padding: 10px;
+    
 }

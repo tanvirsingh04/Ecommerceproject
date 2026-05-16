@@ -1,18 +1,27 @@
-.container{
-    /* border: 2px solid black;    */
+nav{
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+
+.darkMode{
     width: 100%;
     height:60px;
-    margin-top:2px;
-    display: flex; 
+    /* display: flex;
     flex-direction: row;
-    position: sticky;
-    top: 0px;
-    justify-content: space-between;
+    justify-content: space-between; */
+    margin-top:2px;
+    /* border: 2px solid black;    */
     border-radius: 5px;
     background: #EEAECA;
     background-image: radial-gradient( circle 476px at 54.8% 51.5%,  rgba(168,229,253,1) 0%, rgba(244,244,254,1) 42.3%, rgba(244,244,254,1) 100.2% );
+    
 }
-
+/* nav{
+    border: 2px solid red;
+} */
 .logo{
     width: 50px;
     height: 50px;
@@ -90,16 +99,14 @@ li a{
     list-style: none;
     gap: 20px;
 }
-.container,
-.light {
+nav.light,
+.search.light,
+.search.light,
+nav.light * {
 background-color: #ffffff;
 color: #000000;
 }
-.container,
-.dark {
-background-color: #121212;
-color: #e2dddd;
-}
+
 
 nav.dark,
 nav.dark *{
@@ -107,8 +114,27 @@ nav.dark *{
 color: #e2dddd;
 }
 
+nav.dark .search input{
+    background-color: white;
+    color: black;
+
+}
+
+ 
 
 
+
+/* .container.light,
+.container.light * {
+background-color: #ffffff;
+color: #000000;
+}
+
+.container.dark,
+.container.dark *{
+    background-color: #121212;
+color: #e2dddd;
+} */
 
 
 .Login{
@@ -128,14 +154,18 @@ color: #e2dddd;
 .togglebutton{
     /* border: 2px solid black; */
     margin-right: 20px;
-    width: 50px;
+    width: 100px;
     /* height:40px; */
     border: none;
-    border-radius: 20px;
+    border-radius: 40px;
+    font-size: 10px;
+    font-weight: bolder;
+    font-family: monospace;
+    text-align: center;
 }
 
 .togglebutton:hover{
-    background-color: #00030f;
+    background-color: #1237c9;
     color: white;
     transform: scale(1.1);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);

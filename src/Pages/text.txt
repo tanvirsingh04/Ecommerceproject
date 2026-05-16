@@ -1,0 +1,2 @@
+Created Register user page.
+Create a user page, when a user successfully login then user should be taken to a new page- User Page.

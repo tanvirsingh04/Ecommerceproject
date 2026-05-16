@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "alice",
+      "email": "alice@example.com",
+      "password": "alice123"
+    },
+    {
+      "id": "2",
+      "username": "bob",
+      "email": "bob@example.com",
+      "password": "bobsecure"
+    },
+    {
+      "id": "YMEYY2iD07Q",
+      "username": "tanvir",
+      "email": "chandel.tanvir55@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "vCZurn2TkQc",
+      "username": "raja",
+      "email": "raja.tanvir55@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "yW7TffnixYY",
+      "username": "1",
+      "email": "1",
+      "password": "1"
+    },
+    {
+      "id": "cksyaqp2eDs",
+      "username": "raj",
+      "email": "raj@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "63AS2yMc7m0",
+      "username": "e",
+      "email": "t@gmail.com",
+      "password": "12345"
+    },
+    {
+      "id": "PpHchstfCoY",
+      "username": "diva",
+      "email": "diva@gmali.com",
+      "password": "56789"
+    },
+    {
+      "id": "4snmvlLaFWg",
+      "username": "ajay",
+      "email": "ajay@yahoo.com",
+      "password": "12345"
+    },
+    {
+      "id": "yTb1uCCh3s8",
+      "username": "digi",
+      "email": "agsjdagj@gjasgdjh",
+      "password": "12345"
+    },
+    {
+      "id": "q2BfxZ5XsNU",
+      "username": "atustd",
+      "email": "hagfdgh@",
+      "password": "1432463"
+    },
+    {
+      "id": "1IgA9mv2BE8",
+      "username": "sdfg",
+      "email": "gfg@",
+      "password": "hgfg"
+    },
+    {
+      "username": "cody",
+      "email": "rhodes@gmail.com",
+      "password": "1234567",
+      "id": "mJ_aO2lvsRg"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
