@@ -1,162 +1,211 @@
-// import './login.css';        // or your CSS file
 import Navbar from './navbar.js';
 import './Register.css';
-// import { useRef } from 'react';
-import { registerUser } from './Api.js';
-
 import React, { useState } from 'react';
 
 function Register() {
-    const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: ""
-    });
-    const [errors, setErrors] = useState({});
-    const [success, setSuccess] = useState("");
 
-    const Validate = () => {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [address, setAddress] = useState("");
+    const [street, setStreet] = useState("");
+    const [location, setLocation] = useState("");
+    const [message, setMessage] = useState("");
+    const [errors, setIsError] = useState(false);
 
-        let newErrors = {};
-
-        if (!formData.username) newErrors.username = "Name is Requried"
-        if (!formData.email.includes("@"))
-            newErrors.email = "Invalid email";
-        if (formData.password.length < 6)
-            newErrors.password = "Password must be 6+ chars";
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    // Handle input changes
     const handleChange = (e) => {
+
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+
+        if (name === "username") {
+            setUsername(value);
+        }
+
+        if (name === "email") {
+            setEmail(value);
+        }
+
+        if (name === "password") {
+            setPassword(value);
+        }
+        if (name === "address") {
+            setAddress(value);
+        }
+        if (name === "street") {
+            setStreet(value);
+        }
+        if (name === "location") {
+            setLocation(value);
+        }
     };
+
+    // Handle form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!Validate()) return;
+
+        // Basic validation
+        if (
+            username.trim() === "" ||
+            email.trim() === "" ||
+            password.trim() === ""||
+            address.trim() === "" ||
+            street.trim() === "" ||
+            location.trim() === ""
+        ) {
+            setMessage("All fields are required.");
+            setIsError(true);
+            return;
+        }
+
         try {
-            const res = await registerUser(formData);
-            setSuccess("User registered successfully!");
-            console.log(res);
-        } catch (err) {
-            console.error(err);
+
+            // Fetch existing users
+            const response = await fetch("http://localhost:5000/users");
+            const existingUsers = await response.json();
+
+            // Check duplicate user
+            const userExists = existingUsers.some(
+                user =>
+                    user.username === username ||
+                    user.email === email
+            );
+
+            if (userExists) {
+                setMessage("Username or email already exists.");
+                setIsError(true);
+                return;
+            }
+
+            // New user object
+            const newUser = {
+                id: Date.now().toString(),
+                username,
+                email,
+                password,
+                address:{
+                    address,
+                    street,
+                    location
+                }
+                
+            };
+
+            // Save user
+            const postResponse = await fetch("http://localhost:3001/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newUser)
+            });
+
+            if (postResponse.ok) {
+
+                setMessage("Registration successful!");
+                setIsError(false);
+
+                // Clear inputs
+                setUsername("");
+                setEmail("");
+                setPassword("");
+                setAddress("");
+                setStreet("");
+                setLocation("");
+
+            } else {
+                setMessage("Registration failed.");
+                setIsError(true);
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            setMessage("Server connection failed.");
+            setIsError(true);
         }
     };
 
     return (
         <div>
+
             <Navbar />
+
             <div className='registertable'>
+
                 <h1>Register</h1>
+
                 <form onSubmit={handleSubmit}>
+
                     <input
-                    className='inputusername'
+                        className='inputusername'
                         type="text"
                         name="username"
                         placeholder="Name"
+                        value={username}
                         onChange={handleChange}
                     />
-                    <p>{errors.name}</p>
+
                     <input
-                    className='inputemail'
+                        className='inputemail'
                         type="email"
                         name="email"
                         placeholder="Email"
+                        value={email}
                         onChange={handleChange}
                     />
-                    <p>{errors.email}</p>
+
                     <input
-                    className='inputpassword'
+                        className='inputpassword'
                         type="password"
                         name="password"
                         placeholder="Password"
+                        value={password}
                         onChange={handleChange}
                     />
-                    <p>{errors.password}</p>
-                    <button type="submit" className='button'>Register</button>
+                    <input
+                        className='inputaddress'
+                        type="text"
+                        name="address"
+                        placeholder="Address"
+                        value={address}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className='inputstreet'
+                        type="text"
+                        name="street"
+                        placeholder="Street"
+                        value={street}
+                        onChange={handleChange}
+                    />
+                    <input
+                        className='inputlocation'
+                        type="text"
+                        name="location"
+                        placeholder="Location"
+                        value={location}
+                        onChange={handleChange}
+                    />
+
+                    <button
+                        type="submit"
+                        className='button'
+                    >
+                        Register
+                    </button>
+
                 </form>
-                <p className='success'>{success}</p>
+
+                <p className={errors ? "error" : "success"}>
+                    {message}
+                </p>
+
             </div>
+
         </div>
     );
-
 }
 
-
-
 export default Register;
-
-
-{/* // function Register() 
-//     const [username, setUsername] = useState("");
-//     const [email, setEmail] = useState("");
-//     const [password, setPassword] = useState("");
-//     const [message, setMessage] = useState("");
-//     const [isError, setIsError] = useState(false)
-
-//     const handleRegister = async () => {
-//         // Basic validation
-//         if (username.trim() === "" || email.trim() === "" || password.trim() === "") {
-//             setMessage("All fields are required.");
-//             setIsError(true);
-//             return;
-//         }
-
-//         try {
-//             // 1. Fetch existing users from json-server
-//             const response = await fetch("http://localhost:5500/users");
-//             const existingUsers = await response.json();
-
-//             // 2. Check if username or email already exists
-//             const userExists = existingUsers.some(
-//                 user => user.username === username || user.email === email
-//             );
-
-//             if (userExists) {
-//                 setMessage("Username or email already exists. Please login or use different credentials.");
-//                 setIsError(true);
-//                 return;
-//             }
-
-//             // 3. Create new user object
-//             const newUser = {
-//                 id: Date.now()+ "sdf",          // simple unique id
-//                 username: username,
-//                 email: email,
-//                 password: password       // in real app, hash before sending for eg:- ("password": "$2b$10$abcXYZrandomhash...")
-
-//             };
-
-//             // 4. POST new user to json-server
-//             const postResponse = await fetch("http://localhost:5500/users", {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify(newUser)
-//             });
-
-//             if (postResponse.ok) {
-//                 setMessage("Registration successful! You can now login.");
-//                 setIsError(false);
-//                 // Clear form
-//                 setUsername("");
-//                 setEmail("");
-//                 setPassword("");
-//             } else {
-//                 setMessage("Registration failed. Please try again.");
-//                 setIsError(true);
-//             }
-//         } catch (error) {
-//             console.error("Registration error:", error);
-//             setMessage("Cannot connect to server. Make sure json-server is running on port 5500.");
-//             setIsError(true);
-//         }
-//     };
-
-
-// function abc(){
-//     console.log("abc")
-// }
-// const abc = () => console.log("abc") */}

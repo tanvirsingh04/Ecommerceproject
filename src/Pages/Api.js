@@ -1,3 +1,6 @@
+import axios from "axios";
+import { data } from "react-router-dom";
+const API="http://localhost:5500/users"
 export const registerUser = async (data) => {
 try {
 const response = await fetch("http://localhost:5500/users" , {
@@ -12,4 +15,7 @@ return await response.json();
 } catch (error) {
 throw error;
 }
-};
+}
+export const getUsers=()=>axios.get(API);
+export const updateUser=(id,data)=> axios.put(`${API}/${id}`,data);
+export const deleteUser=(data)=> axios.delete(`${API}/${id}`);

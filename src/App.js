@@ -1,31 +1,31 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from './Pages/navbar';
-import Cards from './Pages/card';
-import Loader from './Pages/loader';
+// import Navbar from './Pages/navbar';
+// import Cards from './Pages/card';
+// import Loader from './Pages/loader';
 import Home from './Pages/Home';
 import Register from './Pages/Register';
 import Login from './Pages/login';
 import About from "./Pages/About";
 import Product from './Pages/Product';
 import User from './Pages/user';
+// import New from './Pages/card'
+// import SideBar from "./Pages/new";
 function App() {
   return (
-  <BrowserRouter>
-  <nav> 
+    <BrowserRouter>
 
-
-
-  {/* <Link to="/contact">Contact</Link> */}
-  </nav>
   <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/about" element={<About />} />
   <Route path="/product" element={<Product />} />
   <Route path="/login" element={<Login />} />
   <Route path="/Register" element={<Register />} />
-  <Route path="/user" element={<User/>} />
+  <Route path="/:username" element={<User/>} />
+  {/* <Route path="/new" element={<SideBar/>} /> */}
+
+
   {/* <Route path="/user" element={<User />} /> */}
 
   

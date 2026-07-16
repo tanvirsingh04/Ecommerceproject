@@ -1,11 +1,12 @@
 import './login.css';
 import Navbar from './navbar.js';
 import React, { useState } from 'react';
-import {username} from './Register.js'
+import { username } from './Register.js';
 import { useNavigate } from 'react-router-dom';
 import Home from './Home.js';
-import Aboutus from  './About.js';
+import Aboutus from './About.js';
 import user from './user.js';
+
 
 
 
@@ -13,8 +14,8 @@ function Login() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [user, setegisteredUser] = useState("");
-    const navigate= useNavigate()
+    const [user, setregisteredUser] = useState("");
+    const navigate = useNavigate()
 
     const handleLogin = async () => {
         // Basic validation: fields not empty
@@ -25,7 +26,7 @@ function Login() {
 
         try {
             // Fetch all users from json-server (running on port 5000)
-            const response = await fetch("http://localhost:5500/users");
+            const response = await fetch("http://localhost:3001/users");
             const users = await response.json();
 
             // Check if a user with matching username and password exists
@@ -35,28 +36,40 @@ function Login() {
 
             if (validUser) {
                 localStorage.setItem('loggedInUser', username);
-                navigate('/welcome', { state: { username } });
-                setegisteredUser(username);
+
+                navigate('/welcome', { state: {username} });
+                
+
+
+                setregisteredUser(username);
                 console.log(user);
+                // console.log(address);
                 setLoggedIn(true);
                 // Optionally clear fields after successful login
                 setUsername("");
                 setPassword("");
 
                 navigate("/user") //Redirect to User Page.
+
                 
+
+                
+
             } else {
                 alert("Invalid username or password. Please try again.");
                 setPassword("");   // Clear password field
-                setUsername("");   // Clear username field
+                setUsername("");   // Cl
+                // ear username field
                 setLoggedIn(false);
             }
         } catch (error) {
             console.error("Login error:", error);
-            alert("Could not connect to server. Make sure json-server is running on port 5000.");
+            alert("Could not connect to server. Make sure json-server is running on port 3001.");
             setLoggedIn(false);
         }
     };
+
+    
 
     return (
         <div>
@@ -81,7 +94,8 @@ function Login() {
                 <button className="button" onClick={handleLogin}>Login</button>
 
                 {loggedIn && <p className="welcome-message">Welcome {user}</p>}
-                
+               
+
             </div>
         </div>
     );

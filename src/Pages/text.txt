@@ -1,2 +1,3 @@
 Created Register user page.
 Create a user page, when a user successfully login then user should be taken to a new page- User Page.
+Create UserContext.js to fetch data from the json file and show in Table in the Webapp.

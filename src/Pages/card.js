@@ -1,162 +1,296 @@
-import './card.css';
-import img1 from './cemoflagshoes.png';
-import React, { useState } from 'react';
-import './navbar.js';
+import React from "react";
+import { useState } from "react";
+import "./card.css";
+import SideBar from "./new";
 
- 
-function Cards(){
 
-  const [darkMode, setDarkMode] = useState(false);
-      const toggleTheme = () => {
-          setDarkMode(!darkMode);
-      };
+function Cards() {
+  // This is the product state
+  const [order, setOrders] = useState([])
+  const [product, setProduct] = useState([  
 
-  
 
-  const [count, setCount] =useState(0);
-  const plus=()=>{
-    setCount(count+1);
-  };
+    {
+      id: 1,
+      name: "Reebook Funky Shoes for Men",
+      price: 3999,
+      quantity: 0,
+      total: 0,
+      image: "https://trase.in/cdn/shop/files/42139-BKWH-1.jpg?v=1749468869"
+    },
+    {
+      id: 2,
+      name: "Reebook Loofers for Womens",
+      price: 2999,
+      quantity: 0,
+      total: 0,
 
-  const minus=()=>{
-    setCount(count-1);
-    if(count<=0){
-      setCount(0);
+      image: "https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/665715a386f71d0024e3f9d7/women-shoes-black-1.jpg"
+    },
+    {
+      id: 3,
+      name: "Sparks Sports Shoes for mens",
+      price: 4999,
+      quantity: 0,
+      total: 0,
+
+      image: "https://redchief.in/cdn/shop/files/317_800x.png?v=1756061961"
+    },
+    {
+      id: 4,
+      name: "Jordan Air Shoes for mens (Black)",
+      price: 2499,
+      quantity: 0,
+      total: 0,
+
+      image: "https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/25345394/2023/10/4/e8913b64-a87b-49e7-b685-80e9189865a51696425461509CasualShoes1.jpg"
+    },
+    {
+      id: 5,
+      name: "Bata party wear shoes for mens",
+      price: 1999,
+      quantity: 0,
+      total: 0,
+
+      image: "https://egoss.in/cdn/shop/files/EP-5410_BLACK.jpg?v=1753876169&width=2048"
     }
-  }
-  const reset = () => {
-  setCount(0);
-  };
-  const [count1, setCount1] = React.useState(0);
-  const plus1=()=>{
-    setCount1(count1+1);
+
+  ])
+  // Increase Quantity and Price
+
+  const increaseQuantity = (id) => {
+
+    const updatedProduct = product.map((product) => {
+
+      if (product.id === id) {
+
+        const newQuantity = product.quantity + 1;
+
+        const updatedItem = {
+          ...product,
+          quantity: newQuantity,
+          total: newQuantity * product.price
+        };
+
+        // Only updated product
+        // console.log(JSON.stringify(updatedItem, null, 2));
+
+        return updatedItem;
+      }
+
+      return product;
+    });
+
+    setProduct(updatedProduct);
   };
 
-  const minus1=()=>{
-    setCount1(count1-1);
-    if(count1<=0){
-      setCount1(0);
-    }
-  }
-  const reset1 = () => {
-  setCount1(0);
-  };
-  const [count2, setCount2] = React.useState(0);
-  const plus2=()=>{
-    setCount2(count2+1);
-  };
+  // Decrease Quantity and Price
 
-  const minus2=()=>{
-    setCount2(count2-1);
-    if(count2<=0){
-      setCount2(0);
-    }
-  };
-  const reset2 = () => {
-  setCount2(0);
-  };
-  const [count3, setCount3] = React.useState(0);
-  const plus3=()=>{
-    setCount3(count3+1);
-  };
+  const decreaseQuantity = (id) => {
 
-  const minus3=()=>{
-    setCount3(count3-1);
-    if(count3<=0){
-      setCount3(0);
-    }
-  };
-  const reset3 = () => {
-  setCount3(0);
-  };
-  const [count4, setCount4] = React.useState(0);
-  const plus4=()=>{
-    setCount4(count4+1);
-  };
+    const updatedProduct = product.map((product) => {
 
-  const minus4=()=>{
-    setCount4(count4-1);
-    if(count4<=0){
-      setCount4(0);
-    }
-  };
-  const reset4 = () => {
-  setCount4(0);
-  }
+      if (product.id === id) {
 
+        const newQuantity =
+          product.quantity > 0
+            ? product.quantity - 1
+            : 0;
+
+        const updatedItem = {
+          ...product,
+          quantity: newQuantity,
+          total: newQuantity * product.price,
+        };
+
+        // console.log(JSON.stringify(updatedItem, null, 2));
+
+        return updatedItem;
+      }
+
+      return product;
+    });
+
+    setProduct(updatedProduct);
+  };
 
 
 
-    return(
-      <main className={darkMode ? "app dark" : "app light"}>
-        <div className="card card1">
-        <img src="https://trase.in/cdn/shop/files/42139-BKWH-1.jpg?v=1749468869" className="img card1" alt="Card 1 Shoes" />
-          <h2>Reebook Funky Shoes for Men</h2>
-          <p>Rs-3999</p>
-          <div className='btn'>
-          <button className="btn-grad" id='Buynow'>Buy Now</button>
-          <button className='plus' onClick={plus}>+</button>
-          <input type='text' className='quantity' id='Quantity' value={count}></input>
-          <button className='minus' onClick={minus}>-</button>
-          <button onClick={reset}>Reset</button>
-          </div>
-        </div>
-        <div className="card card1">
-          <img src={img1} className="img card2" alt="Card 2 Shoes" />
-          <h2>Reebook Loofers for Womens</h2>
-          <p>Rs-2999</p>
-          <div className='btn'>
-          <button id="Buynow1" className="btn-grad btn2">Buy Now</button>
-          <button className='plus' onClick={plus1}>+</button>
-          <input type='text' className='quantity' id='Quantity1' value={count1}></input>
-          <button className='minus' id='Minus1' onClick={minus1}>-</button>
-          <button onClick={reset1}>Reset</button>
-          </div>
-        </div>
-        <div className="card card1">
-          <img src='https://redchief.in/cdn/shop/files/317_800x.png?v=1756061961' className="img card2" alt="Card 3 Shoes" />
-          <h2>Sparks Sports Shoes for mens</h2>
-          <p>Rs-4999</p>
-          <div className='btn'>
-          <button id="Buynow2" className="btn-grad btn3">Buy Now</button>
-          <button className='plus' id='Plus2' onClick={plus2}>+</button>
-          <input type='text' className='quantity' id='Quantity2' value={count2}></input>
-          <button className='minus' id='Minus2' onClick={minus2}>-</button>
-          <button onClick={reset2}>Reset</button>
-          </div>
-        </div>
-        <div className="card card1">
-          <img src='https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/25345394/2023/10/4/e8913b64-a87b-49e7-b685-80e9189865a51696425461509CasualShoes1.jpg' className="img card2" alt="Card 4 Shoes" />
-          <h2>Jordan Air Shoes for mens (Black)</h2>
-          <p>Rs-2499</p>
-           <div className='btn'>
-          <button id="Buynow3" className="btn-grad btn4" >Buy Now</button>
-          <button className='plus' id='Plus3' onClick={plus3}>+</button>
-          <input type='text' className='quantity' id='Quantity3' value={count3}></input>
-          <button className='minus' id='Minus3' onClick={minus3}>-</button>
-          <button onClick={reset3}>Reset</button>
-           </div>
-        </div>
-        <div className="card card1">
-          <img src='https://egoss.in/cdn/shop/files/EP-5410_BLACK.jpg?v=1753876169&width=2048'className="img card2" alt="Card 5 Shoes" />
-          <h2>Bata party wear shoes for mens</h2>
-          <p>Rs-1999</p>
-          <div className='btn'>
-          <button id="Buynow4" className="btn-grad btn5" >Buy Now</button>
-          <button className='plus' onClick={plus4}>+</button>
-          <input type='text' className='quantity' value={count4}></input>
-          <button className='minus' onClick={minus4}>-</button>
-          <button onClick={reset4}>Reset</button>
-          </div>
-        </div>
-      </main> 
+  // Reset Quantity
+  const resetQuantity = (id) => {
+    const updatedProduct = product.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          quantity: 0,
+          total: 0
+        };
+      }
+      return item;
+    });
+
+    setProduct(updatedProduct);
+    // console.log(JSON.stringify(updatedProduct, null, 2))
+  };
+
+  //Delete Product
+
+  const deleteProduct = (id) => {
+  setProduct(
+    product.map((item) =>
+      item.id === id
+        ? { ...item, quantity: 0, total: 0 }
+        : item
+    )
+  );
+
+  setOrders(
+    order.filter((item) => item.id !== id)
+  );
+};
+
+  //Buy Now
+
+  const buyNow = async (id) => {
+
+    const selectedProduct = product.find(
+      (item) => item.id === id
     );
+
+    if (!selectedProduct || selectedProduct.quantity === 0) {
+      alert("Please add quantity first");
+      return;
+    }
+
+    const cartItems = [{
+      id: selectedProduct.id,
+      name: selectedProduct.name,
+      quantity: selectedProduct.quantity,
+      total: selectedProduct.total,
+    }];
+
+    setOrders(cartItems);
+    // console.log("abc" + "" + cartItems)
+
+
+
+
+
+    try {
+
+      const response = await fetch(
+        "http://localhost:3001/product",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderDate: new Date(),
+            items: cartItems,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      // console.log("Saved Order:", data);
+
+      alert("Order Saved Successfully");
+
+    } catch (error) {
+
+      // console.log("Error saving order:", error);
+
+    }
+  };
+
+  const deleteOrderItem = (id) => {
+    const updatedOrders = order.filter(
+      (item) => item.id !== id
+    );
+
+    setOrders(updatedOrders);
+  };
+
+
+
+
+  return (
+
+    <main className="cards-Main">
+  {product.map((product) => (
+    <div className="cards" key={product.id}>
+      <img
+        src={product.image}
+        className="img card2"
+        alt={product.name}
+      />
+
+      <h2>{product.name}</h2>
+
+      <p>Rs-{product.price}</p>
+
+      <div className="btn">
+        <button
+          className="btn-grad"
+          onClick={() => buyNow(product.id)}
+        >
+          Buy Now
+        </button>
+
+        <button
+          className="plus"
+          onClick={() => increaseQuantity(product.id)}
+        >
+          +
+        </button>
+
+        <input
+          type="text"
+          className="quantity"
+          value={product.quantity}
+          readOnly
+        />
+
+        <button
+          className="minus"
+          onClick={() => decreaseQuantity(product.id)}
+        >
+          -
+        </button>
+
+        <button
+          className="reset"
+          onClick={() => resetQuantity(product.id)}
+        >
+          Reset
+        </button>
+
+        <button
+          className="delete"
+          onClick={() => deleteProduct(product.id)}
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  ))}
+{/* <h1>Order Summary</h1> */}
+
+<SideBar
+    order={order}
+    setOrders={setOrders}
+/>
+</main>
+
+
+
+
     
-  }
-export default Cards;
 
+  );
 
- 
+}
 
-   
-  
+export default Cards
