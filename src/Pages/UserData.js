@@ -1,16 +1,17 @@
-import './user1.css';
+import './UserData.css';
 import Navbar from './navbar';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 function User() {
-    const { username } = useParams();
+    // const { username } = useParams();
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const userName = localStorage.getItem("loggedInUser");  
 
     useEffect(() => {
-        fetch("http://localhost:3001/users")
+        fetch("http://localhost:8000/users")
             .then((response) => response.json())
             .then((data) => {
                 setUsers(data);
@@ -27,7 +28,9 @@ function User() {
     }
 
     const registeredUser = users.find(
-        (u) => u.username.toLowerCase() === username.toLowerCase()
+        (u) => u.userName &&
+        userName &&
+        u.userName.toLowerCase()=== userName.toLowerCase()
     );
 
     if (!registeredUser) {
@@ -41,11 +44,12 @@ function User() {
             <div className="Main">
                 <div className="greetings">
                     <div>
-                        <h1>{registeredUser.username}</h1>
+                        <h1>Name : {registeredUser.userFirstName}</h1>
+                        <h2>User Name: {registeredUser.userName}</h2>
                         <p>Email: {registeredUser.email}</p>
-                        <p>Address: {registeredUser.address.address}</p>
-                        <p>Street: {registeredUser.address.street}</p>
-                        <p>Location: {registeredUser.address.location}</p>
+                        <p>Address: {registeredUser.address}</p>
+                        <p>Street: {registeredUser.street}</p>
+                        <p>Location: {registeredUser.location}</p>
                     </div>
                 </div>
             </div>

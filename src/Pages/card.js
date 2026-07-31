@@ -1,296 +1,353 @@
-import React from "react";
-import { useState } from "react";
-import "./card.css";
-import SideBar from "./new";
+// ============================
+// ===== CHANGED =====
+// Combined imports
+// ============================
+import React, { useState, useEffect } from "react";
 
+import "./card.css";
+import Table from "./SummaryTable";
+// import Navbar from "./navbar";
 
 function Cards() {
-  // This is the product state
-  const [order, setOrders] = useState([])
-  const [product, setProduct] = useState([  
+  // ============================
+  // ===== CHANGED =====
+  // Product State
+  // ============================
+  const [product, setProduct] = useState([]);
 
+  // ============================
+  // ===== CHANGED =====
+  // Order State
+  // ============================
+  const [order, setOrders] = useState([]);
 
-    {
-      id: 1,
-      name: "Reebook Funky Shoes for Men",
-      price: 3999,
-      quantity: 0,
-      total: 0,
-      image: "https://trase.in/cdn/shop/files/42139-BKWH-1.jpg?v=1749468869"
-    },
-    {
-      id: 2,
-      name: "Reebook Loofers for Womens",
-      price: 2999,
-      quantity: 0,
-      total: 0,
+  // ============================
+  // ===== NEW =====
+  // Loading State
+  // ============================
+  const [loading, setLoading] = useState(true);
 
-      image: "https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/665715a386f71d0024e3f9d7/women-shoes-black-1.jpg"
-    },
-    {
-      id: 3,
-      name: "Sparks Sports Shoes for mens",
-      price: 4999,
-      quantity: 0,
-      total: 0,
+  // ============================
+  // ===== CHANGED =====
+  // Load products when component mounts
+  // ============================
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-      image: "https://redchief.in/cdn/shop/files/317_800x.png?v=1756061961"
-    },
-    {
-      id: 4,
-      name: "Jordan Air Shoes for mens (Black)",
-      price: 2499,
-      quantity: 0,
-      total: 0,
-
-      image: "https://assets.myntassets.com/dpr_1.5,q_30,w_400,c_limit,fl_progressive/assets/images/25345394/2023/10/4/e8913b64-a87b-49e7-b685-80e9189865a51696425461509CasualShoes1.jpg"
-    },
-    {
-      id: 5,
-      name: "Bata party wear shoes for mens",
-      price: 1999,
-      quantity: 0,
-      total: 0,
-
-      image: "https://egoss.in/cdn/shop/files/EP-5410_BLACK.jpg?v=1753876169&width=2048"
-    }
-
-  ])
-  // Increase Quantity and Price
-
-  const increaseQuantity = (id) => {
-
-    const updatedProduct = product.map((product) => {
-
-      if (product.id === id) {
-
-        const newQuantity = product.quantity + 1;
-
-        const updatedItem = {
-          ...product,
-          quantity: newQuantity,
-          total: newQuantity * product.price
-        };
-
-        // Only updated product
-        // console.log(JSON.stringify(updatedItem, null, 2));
-
-        return updatedItem;
-      }
-
-      return product;
-    });
-
-    setProduct(updatedProduct);
-  };
-
-  // Decrease Quantity and Price
-
-  const decreaseQuantity = (id) => {
-
-    const updatedProduct = product.map((product) => {
-
-      if (product.id === id) {
-
-        const newQuantity =
-          product.quantity > 0
-            ? product.quantity - 1
-            : 0;
-
-        const updatedItem = {
-          ...product,
-          quantity: newQuantity,
-          total: newQuantity * product.price,
-        };
-
-        // console.log(JSON.stringify(updatedItem, null, 2));
-
-        return updatedItem;
-      }
-
-      return product;
-    });
-
-    setProduct(updatedProduct);
-  };
-
-
-
-  // Reset Quantity
-  const resetQuantity = (id) => {
-    const updatedProduct = product.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          quantity: 0,
-          total: 0
-        };
-      }
-      return item;
-    });
-
-    setProduct(updatedProduct);
-    // console.log(JSON.stringify(updatedProduct, null, 2))
-  };
-
-  //Delete Product
-
-  const deleteProduct = (id) => {
-  setProduct(
-    product.map((item) =>
-      item.id === id
-        ? { ...item, quantity: 0, total: 0 }
-        : item
-    )
-  );
-
-  setOrders(
-    order.filter((item) => item.id !== id)
-  );
-};
-
-  //Buy Now
-
-  const buyNow = async (id) => {
-
-    const selectedProduct = product.find(
-      (item) => item.id === id
-    );
-
-    if (!selectedProduct || selectedProduct.quantity === 0) {
-      alert("Please add quantity first");
-      return;
-    }
-
-    const cartItems = [{
-      id: selectedProduct.id,
-      name: selectedProduct.name,
-      quantity: selectedProduct.quantity,
-      total: selectedProduct.total,
-    }];
-
-    setOrders(cartItems);
-    // console.log("abc" + "" + cartItems)
-
-
-
-
-
+  // ============================
+  // ===== CHANGED =====
+  // Fetch Products
+  // ============================
+  const fetchProducts = async () => {
     try {
+      const response = await fetch("http://localhost:8000/products");
 
-      const response = await fetch(
-        "http://localhost:3001/product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderDate: new Date(),
-            items: cartItems,
-          }),
-        }
-      );
+      // ============================
+      // ===== NEW =====
+      // Check server response
+      // ============================
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
 
       const data = await response.json();
 
-      // console.log("Saved Order:", data);
+      // ============================
+      // ===== CHANGED =====
+      // Convert backend data into frontend format
+      // ============================
+      const formattedProducts = data.map((item) => ({
+        id: item.id,
+        name: item.productName,
+        description: item.productDes,
+        price: Number(item.productPrice),
+        quantity: 0,
+        total: 0,
+        image: item.productImage,
+      }));
 
-      alert("Order Saved Successfully");
+      setProduct(formattedProducts);
+    } catch (err) {
+      // ============================
+      // ===== CHANGED =====
+      // Better error handling
+      // ============================
+      console.error("Error loading products:", err);
+      alert("Unable to load products.");
+    } finally {
+      // ============================
+      // ===== NEW =====
+      // Stop loading
+      // ============================
+      setLoading(false);
+    }
+  }; // ============================
+  // ===== CHANGED =====
+  // Increase Quantity
+  // Uses functional state update
+  // ============================
+  const increaseQuantity = (id) => {
+    setProduct((prevProducts) =>
+      prevProducts.map((item) => {
+        if (item.id === id) {
+          const newQuantity = item.quantity + 1;
 
-    } catch (error) {
+          return {
+            ...item,
+            quantity: newQuantity,
+            total: newQuantity * item.price,
+          };
+        }
 
-      // console.log("Error saving order:", error);
+        return item;
+      }),
+    );
+  };
 
+  // ============================
+  // ===== CHANGED =====
+  // Decrease Quantity
+  // Uses functional state update
+  // ============================
+  const decreaseQuantity = (id) => {
+    setProduct((prevProducts) =>
+      prevProducts.map((item) => {
+        if (item.id === id) {
+          const newQuantity = item.quantity > 0 ? item.quantity - 1 : 0;
+
+          return {
+            ...item,
+            quantity: newQuantity,
+            total: newQuantity * item.price,
+          };
+        }
+
+        return item;
+      }),
+    );
+  };
+
+  // ============================
+  // ===== CHANGED =====
+  // Reset Quantity
+  // Uses functional state update
+  // ============================
+  const resetQuantity = (id) => {
+    setProduct((prevProducts) =>
+      prevProducts.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: 0,
+              total: 0,
+            }
+          : item,
+      ),
+    );
+  };
+
+  // ============================
+  // ===== CHANGED =====
+  // Delete Product
+  // Deletes from backend + frontend
+  // ============================
+  const deleteProduct = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8000/save/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      // ============================
+      // ===== NEW =====
+      // Check if delete succeeded
+      // ============================
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      // ============================
+      // ===== CHANGED =====
+      // Remove product from UI
+      // ============================
+      setProduct((prevProducts) =>
+        prevProducts.filter((item) => item.id !== id),
+      );
+
+      // ============================
+      // ===== CHANGED =====
+      // Remove product from orders
+      // ============================
+      setOrders((prevOrders) => prevOrders.filter((item) => item.id !== id));
+
+      alert(data.message);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to delete product.");
     }
   };
 
-  const deleteOrderItem = (id) => {
-    const updatedOrders = order.filter(
-      (item) => item.id !== id
-    );
+  // ============================
+  // ===== CHANGED =====
+  // Buy Now
+  // Better error handling
+  // ============================
+  const addToCart = async (id) => {
+    const selectedProduct = product.find((item) => item.id === id);
 
-    setOrders(updatedOrders);
+    if (!selectedProduct || selectedProduct.quantity === 0) {
+      alert("Please add quantity first.");
+      return;
+    }
+
+    const cartItems = [
+      {
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        description: selectedProduct.description,
+        quantity: selectedProduct.quantity,
+        total: selectedProduct.total,
+      },
+    ];
+
+    console.log(cartItems);
+
+    // ============================
+    // ===== SAME =====
+    // Save order in sidebar
+    // ============================
+    setOrders(cartItems);
+
+    try {
+      const response = await fetch("http://localhost:8000/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderDate: new Date(),
+          items: cartItems,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+      
+
+      // ============================
+      // ===== NEW =====
+      // Check server response
+      // ============================
+      if (!response.ok) {
+        console.log("server return:", data);
+        
+        throw new Error("Server Error");
+
+        
+  
+      }
+
+      alert(data.message);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to save order.");
+    }
   };
 
-
-
+  // ============================
+  // ===== CHANGED =====
+  // Delete Order Item
+  // Uses functional state update
+  // ============================
+  const deleteOrderItem = (id) => {
+    setOrders((prevOrders) => prevOrders.filter((item) => item.id !== id));
+  }; // ============================
+  // ===== NEW =====
+  // Show loading while fetching products
+  // ============================
+  if (loading) {
+    return <h2>Loading Products...</h2>;
+  }
 
   return (
-
     <main className="cards-Main">
-  {product.map((product) => (
-    <div className="cards" key={product.id}>
-      <img
-        src={product.image}
-        className="img card2"
-        alt={product.name}
+      {/* ============================
+          ===== NEW =====
+          Show message if no products
+      ============================ */}
+      {product.length === 0 ? (
+        <h2>No Products Available</h2>
+      ) : (
+        product.map((product) => (
+          <div className="cards" key={product.id}>
+            <img src={product.image} className="img card2" alt={product.name} />
+
+            <h2>{product.name}</h2>
+
+            <h3 className="productDes">{product.description}</h3>
+
+            <p>Rs - {product.price}</p>
+
+            <div className="btn">
+              <button className="btn-grad" onClick={() => addToCart(product.id)}>
+                Add to Cart
+              </button>
+
+              <button
+                className="plus"
+                onClick={() => increaseQuantity(product.id)}
+              >
+                +
+              </button>
+
+              <input
+                type="text"
+                className="quantity"
+                value={product.quantity}
+                readOnly
+              />
+
+              <button
+                className="minus"
+                onClick={() => decreaseQuantity(product.id)}
+              >
+                -
+              </button>
+
+              <button
+                className="reset"
+                onClick={() => resetQuantity(product.id)}
+              >
+                Reset
+              </button>
+
+              <button
+                className="delete"
+                onClick={() => deleteProduct(product.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))
+      )}
+
+      {/* ============================
+          ===== CHANGED =====
+          Pass deleteOrderItem function
+          to SideBar
+      ============================ */}
+
+      <Table
+        order={order}
+        setOrders={setOrders}
+        deleteOrderItem={deleteOrderItem}
       />
-
-      <h2>{product.name}</h2>
-
-      <p>Rs-{product.price}</p>
-
-      <div className="btn">
-        <button
-          className="btn-grad"
-          onClick={() => buyNow(product.id)}
-        >
-          Buy Now
-        </button>
-
-        <button
-          className="plus"
-          onClick={() => increaseQuantity(product.id)}
-        >
-          +
-        </button>
-
-        <input
-          type="text"
-          className="quantity"
-          value={product.quantity}
-          readOnly
-        />
-
-        <button
-          className="minus"
-          onClick={() => decreaseQuantity(product.id)}
-        >
-          -
-        </button>
-
-        <button
-          className="reset"
-          onClick={() => resetQuantity(product.id)}
-        >
-          Reset
-        </button>
-
-        <button
-          className="delete"
-          onClick={() => deleteProduct(product.id)}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  ))}
-{/* <h1>Order Summary</h1> */}
-
-<SideBar
-    order={order}
-    setOrders={setOrders}
-/>
-</main>
-
-
-
-
-    
-
+    </main>
   );
-
 }
 
-export default Cards
+export default Cards;

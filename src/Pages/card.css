@@ -32,15 +32,24 @@
 }
 
 .cards h2 {
+  /* border: 2px solid black; */
   font-size: 18px;
-  margin: 0 0 6px;
+  margin: 5px;
   color: #1f2937;
 }
 
 .cards p {
-  margin: 0 0 12px;
+  margin: 5px;
   font-weight: 600;
   color: #111827;
+}
+
+.productDes{
+  /* border: 2px solid black; */
+  margin: 5px;
+  /* padding: 10px; */
+  font-weight: lighter;
+  font-size: medium;
 }
 
 .btn {

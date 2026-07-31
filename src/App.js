@@ -9,7 +9,7 @@ import Register from './Pages/Register';
 import Login from './Pages/login';
 import About from "./Pages/About";
 import Product from './Pages/Product';
-import User from './Pages/user';
+import User from './Pages/UserData';
 // import New from './Pages/card'
 // import SideBar from "./Pages/new";
 function App() {
