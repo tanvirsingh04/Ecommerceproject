@@ -1,28 +1,31 @@
 import React from "react";
 // import './Product.css'
-import Navbar from "./navbar";
+// import "./navbar.css";
+// import Navbar from "./navbar";
 import { useContext } from "react";
-import { ThemeContext } from "../ThemeContext";
-import './navbar.css';
+import { TheamContext } from "../ThemeContext";
 function Product() {
-const { theme, toggleTheme } = useContext(ThemeContext);
-const styles = {
-backgroundColor: theme === "light" ? "#fff" : "#000" ,
-color: theme === "light" ? "#000" : "#f8f5f5" ,
-height: "100vh" ,
-textAlign: "center" ,
-paddingTop: "50px"
-};
-return (
+  // const { theme, toggleTheme } = useContext(ThemeContext);
+  const { darkMode, setDarkMode } = useContext(TheamContext);
 
+  const styles = {
+    // backgroundColor: theme === "light" ? "#fff" : "#000",
+    // color: theme === "light" ? "#000" : "#f8f5f5",
+    backgroundColor: darkMode === false ? "#fff" : "#000",
+    color: darkMode === false ? "#000" : "#f8f5f5",
+    height: "100vh",
+    textAlign: "center",
+    paddingTop: "50px",
+  };
+  return (
     <div style={styles}>
-    <Navbar />
-<h1>{theme.toUpperCase()} MODE</h1>
-<button onClick={toggleTheme}>
-Switch Theme
-</button>
-</div>
-);
+      {/* <Navbar /> */}
+      {/* <h1>{theme.toUpperCase()} MODE</h1> */}
+      <button type="button" onClick={() => setDarkMode(!darkMode)}>
+        Switch Theme
+      </button>
+    </div>
+  );
 }
 // export default App;
 export default Product;

@@ -1,5 +1,5 @@
 // import { Nav } from 'react-bootstrap';
-import Navbar from './navbar';
+// import Navbar from './navbar';
 import Loader from './loader';
 import Cards from './card';
 
@@ -10,7 +10,7 @@ function Home() {
 return (
     <div>
 
-        <Navbar/>
+        {/* <Navbar/> */}
         <Loader/>
         <Cards/>
     </div>

@@ -1,7 +1,7 @@
 // import React from 'react';
 import React from 'react';
-import Navbar from'./navbar';
-import './navbar.css'
+// import Navbar from'./navbar';
+// import './navbar.css'
 
 
 
@@ -10,7 +10,7 @@ function About() {
 return (
 <div>
     
-<Navbar/>
+{/* <Navbar/> */}
 </div>
 );
 }

@@ -1,46 +1,34 @@
-import Navbar from "./navbar.js";
+// import Navbar from "./navbar.js";
 import "./Register.css";
 import React, { useState } from "react";
 
 function Register() {
-  const [userFirstName, setUserFirstName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
-  const [street, setStreet] = useState("");
-  const [location, setLocation] = useState("");
+  // const [userFirstName, setUserFirstName] = useState("");
+  // const [userName, setUserName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [street, setStreet] = useState("");
+  // const [location, setLocation] = useState("");
+  const [user, setUser] = useState({
+    userFirstName: "",
+    userName: "",
+    email: "",
+    password: "",
+    address: "",
+    street: "",
+    location: "",
+  });
   const [message, setMessage] = useState("");
   const [errors, setIsError] = useState(false);
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === "userFirstName") {
-      setUserFirstName(value);
-    }
-
-    if (name === "userName"){
-      setUserName(value);
-    }
-
-    if (name === "email") {
-      setEmail(value);
-    }
-
-    if (name === "password") {
-      setPassword(value);
-    }
-    if (name === "address") {
-      setAddress(value);
-    }
-    if (name === "street") {
-      setStreet(value);
-    }
-    if (name === "location") {
-      setLocation(value);
-    }
+    setUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Handle form submit
@@ -49,13 +37,13 @@ function Register() {
 
     // Basic validation
     if (
-      userFirstName.trim()=== ""||
-      userName.trim() === "" ||
-      email.trim() === "" ||
-      password.trim() === "" ||
-      address.trim() === "" ||
-      street.trim() === "" ||
-      location.trim() === ""
+      user.userFirstName.trim() === "" ||
+      user.userName.trim() === "" ||
+      user.email.trim() === "" ||
+      user.password.trim() === "" ||
+      user.address.trim() === "" ||
+      user.street.trim() === "" ||
+      user.location.trim() === ""
     ) {
       setMessage("All fields are required.");
       setIsError(true);
@@ -63,26 +51,13 @@ function Register() {
     }
 
     try {
-      // New user object
-      const newUser = {
-        userFirstName,
-        userName,
-        email,
-        password,
-        address,
-        street,
-        location,
-      };
-      console.log(newUser);
-      
-
-      // Save user
-      const postResponse = await fetch("http://localhost:8000/register", {
+      console.log(user);
+      const postResponse = await fetch("http://localhost:9000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(user),
       });
 
       const result = await postResponse.json();
@@ -90,28 +65,32 @@ function Register() {
       if (postResponse.ok) {
         setMessage(result.message);
         setIsError(false);
-        setUserFirstName("");
-        setUserName("");
-        setEmail("");
-        setPassword("");
-        setAddress("");
-        setStreet("");
-        setLocation("");
+
+        setUser({
+          userFirstName: "",
+          userName: "",
+          email: "",
+          password: "",
+          address: "",
+          street: "",
+          location: "",
+        });
       } else {
         setMessage(result.message);
         setIsError(true);
       }
+
+      // Save user
     } catch (error) {
       console.error(error);
-
       setMessage("Server connection failed.");
       setIsError(true);
     }
   };
 
   return (
-    <div>
-      <Navbar />
+    <div className="register-page">
+      {/* <Navbar /> */}
 
       <div className="registertable">
         <h1>Register</h1>
@@ -122,7 +101,7 @@ function Register() {
             type="text"
             name="userFirstName"
             placeholder="Name"
-            value={userFirstName}
+            value={user.userFirstName}
             onChange={handleChange}
           />
           <input
@@ -130,7 +109,7 @@ function Register() {
             type="text"
             name="userName"
             placeholder="User Name"
-            value={userName}
+            value={user.userName}
             onChange={handleChange}
           />
 
@@ -139,7 +118,7 @@ function Register() {
             type="email"
             name="email"
             placeholder="Email"
-            value={email}
+            value={user.email}
             onChange={handleChange}
           />
 
@@ -148,7 +127,7 @@ function Register() {
             type="password"
             name="password"
             placeholder="Password"
-            value={password}
+            value={user.password}
             onChange={handleChange}
           />
           <input
@@ -156,7 +135,7 @@ function Register() {
             type="text"
             name="address"
             placeholder="Address"
-            value={address}
+            value={user.address}
             onChange={handleChange}
           />
           <input
@@ -164,7 +143,7 @@ function Register() {
             type="text"
             name="street"
             placeholder="Street"
-            value={street}
+            value={user.street}
             onChange={handleChange}
           />
           <input
@@ -172,7 +151,7 @@ function Register() {
             type="text"
             name="location"
             placeholder="Location"
-            value={location}
+            value={user.location}
             onChange={handleChange}
           />
 

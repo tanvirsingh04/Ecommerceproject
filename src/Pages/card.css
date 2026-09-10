@@ -5,11 +5,13 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 40px;
   padding: 20px;
+
   /* box-sizing: border-box; */
 }
+
 
 .cards {
   width: 280px;

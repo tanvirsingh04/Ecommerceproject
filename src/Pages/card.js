@@ -1,73 +1,57 @@
-// ============================
-// ===== CHANGED =====
-// Combined imports
-// ============================
 import React, { useState, useEffect } from "react";
-
 import "./card.css";
 import Table from "./SummaryTable";
-// import Navbar from "./navbar";
 
 function Cards() {
-  // ============================
-  // ===== CHANGED =====
-  // Product State
-  // ============================
-  const [product, setProduct] = useState([]);
-
-  // ============================
-  // ===== CHANGED =====
-  // Order State
-  // ============================
+  const [productlist, setProductList] = useState([]);
   const [order, setOrders] = useState([]);
-
-  // ============================
-  // ===== NEW =====
-  // Loading State
-  // ============================
   const [loading, setLoading] = useState(true);
-
-  // ============================
-  // ===== CHANGED =====
-  // Load products when component mounts
-  // ============================
+  const [loggedInUser, setLoggedInUser] = useState(null);
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const user = localStorage.getItem("loggedInUser");
+    console.log("LOCAL STORAGE USER:", user);
+    if (user) {
+      const parsedUser =JSON.parse(user)
+      // setLoggedInUser(JSON.parse(user));
+          console.log("PARSED USER:", parsedUser);
+          setLoggedInUser(parsedUser)
 
-  // ============================
-  // ===== CHANGED =====
-  // Fetch Products
-  // ============================
+    }
+    fetchProducts()
+  }, []);
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:8000/products");
+      const response = await fetch("http://localhost:9000/productlist");
 
-      // ============================
-      // ===== NEW =====
-      // Check server response
-      // ============================
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
 
       const data = await response.json();
 
+      console.log(data);
+
       // ============================
       // ===== CHANGED =====
       // Convert backend data into frontend format
       // ============================
-      const formattedProducts = data.map((item) => ({
-        id: item.id,
-        name: item.productName,
-        description: item.productDes,
-        price: Number(item.productPrice),
-        quantity: 0,
-        total: 0,
-        image: item.productImage,
-      }));
+      const formattedProducts = data.map((item, i) => {
+        console.log("k123" + i, item);
 
-      setProduct(formattedProducts);
+        return {
+          id: item._id,
+          name: item.productName,
+          description: item.productDes,
+          price: Number(item.productPrice),
+          quantity: 0,
+          total: 0,
+          image: item.productImage,
+        };
+      });
+
+      console.log("FD", formattedProducts);
+
+      setProductList(formattedProducts);
     } catch (err) {
       // ============================
       // ===== CHANGED =====
@@ -88,7 +72,7 @@ function Cards() {
   // Uses functional state update
   // ============================
   const increaseQuantity = (id) => {
-    setProduct((prevProducts) =>
+    setProductList((prevProducts) =>
       prevProducts.map((item) => {
         if (item.id === id) {
           const newQuantity = item.quantity + 1;
@@ -111,7 +95,7 @@ function Cards() {
   // Uses functional state update
   // ============================
   const decreaseQuantity = (id) => {
-    setProduct((prevProducts) =>
+    setProductList((prevProducts) =>
       prevProducts.map((item) => {
         if (item.id === id) {
           const newQuantity = item.quantity > 0 ? item.quantity - 1 : 0;
@@ -134,7 +118,7 @@ function Cards() {
   // Uses functional state update
   // ============================
   const resetQuantity = (id) => {
-    setProduct((prevProducts) =>
+    setProductList((prevProducts) =>
       prevProducts.map((item) =>
         item.id === id
           ? {
@@ -152,11 +136,15 @@ function Cards() {
   // Delete Product
   // Deletes from backend + frontend
   // ============================
-  const deleteProduct = async (id) => {
+  const productdelete = async (id) => {
+    console.log(id);
     try {
-      const response = await fetch(`http://localhost:8000/save/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:9000/productdelete/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       const data = await response.json();
 
@@ -172,7 +160,7 @@ function Cards() {
       // ===== CHANGED =====
       // Remove product from UI
       // ============================
-      setProduct((prevProducts) =>
+      setProductList((prevProducts) =>
         prevProducts.filter((item) => item.id !== id),
       );
 
@@ -195,7 +183,12 @@ function Cards() {
   // Better error handling
   // ============================
   const addToCart = async (id) => {
-    const selectedProduct = product.find((item) => item.id === id);
+    // if (!loggedInUser){
+    //   alert("Please loggin first to add product to cart")
+    //   return
+    // }
+    const selectedProduct = productlist.find((item) => item.id === id);
+
 
     if (!selectedProduct || selectedProduct.quantity === 0) {
       alert("Please add quantity first.");
@@ -204,7 +197,7 @@ function Cards() {
 
     const cartItems = [
       {
-        id: selectedProduct.id,
+        id: selectedProduct._id,
         name: selectedProduct.name,
         description: selectedProduct.description,
         quantity: selectedProduct.quantity,
@@ -221,21 +214,24 @@ function Cards() {
     setOrders(cartItems);
 
     try {
-      const response = await fetch("http://localhost:8000/orders", {
+      const response = await fetch("http://localhost:9000/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          // userId : loggedInUser._id,
+          // userName : loggedInUser.name,
+          // userEmail : loggedInUser.email,
           orderDate: new Date(),
           items: cartItems,
+          status: "Pending",
         }),
       });
 
       const data = await response.json();
 
       console.log(data);
-      
 
       // ============================
       // ===== NEW =====
@@ -243,14 +239,19 @@ function Cards() {
       // ============================
       if (!response.ok) {
         console.log("server return:", data);
-        
-        throw new Error("Server Error");
 
-        
-  
+        throw new Error("Server Error");
       }
 
-      alert(data.message);
+      setOrders((prevOrders) => [
+        ...prevOrders,
+        {
+          ...data,
+          status: "Pending",
+        },
+      ]);
+
+      alert("Product added succefully");
     } catch (err) {
       console.error(err);
       alert("Unable to save order.");
@@ -278,10 +279,10 @@ function Cards() {
           ===== NEW =====
           Show message if no products
       ============================ */}
-      {product.length === 0 ? (
+      {productlist.length === 0 ? (
         <h2>No Products Available</h2>
       ) : (
-        product.map((product) => (
+        productlist.map((product) => (
           <div className="cards" key={product.id}>
             <img src={product.image} className="img card2" alt={product.name} />
 
@@ -292,8 +293,14 @@ function Cards() {
             <p>Rs - {product.price}</p>
 
             <div className="btn">
-              <button className="btn-grad" onClick={() => addToCart(product.id)}>
-                Add to Cart
+              <button
+                className="btn-grad"
+                onClick={() => addToCart(product.id)}
+                  // disabled = {!loggedInUser}
+                
+              >
+                Add To Cart
+                {/* {loggedInUser ? "Add To Cart" : "Loggin to Add"} */}
               </button>
 
               <button
@@ -326,7 +333,10 @@ function Cards() {
 
               <button
                 className="delete"
-                onClick={() => deleteProduct(product.id)}
+                onClick={() => {
+                  console.log(product);
+                  productdelete(product.id);
+                }}
               >
                 Delete
               </button>
