@@ -151,7 +151,7 @@ nav.app.dark {
 }
 
 .togglebutton:hover {
-  background: linear-gradient(135deg, #111111, #393939);
+  background: white;
   color: #ffffff;
   transform: translateY(-1px);
 }

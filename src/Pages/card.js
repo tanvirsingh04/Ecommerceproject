@@ -6,17 +6,7 @@ function Cards() {
   const [productlist, setProductList] = useState([]);
   const [order, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loggedInUser, setLoggedInUser] = useState(null);
   useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    console.log("LOCAL STORAGE USER:", user);
-    if (user) {
-      const parsedUser =JSON.parse(user)
-      // setLoggedInUser(JSON.parse(user));
-          console.log("PARSED USER:", parsedUser);
-          setLoggedInUser(parsedUser)
-
-    }
     fetchProducts()
   }, []);
   const fetchProducts = async () => {
